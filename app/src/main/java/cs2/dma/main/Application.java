@@ -15,7 +15,7 @@ public class Application {
         GameDataManager manager = new GameDataManager();
         if (manager.initializeVmm()) {
             if (manager.initializeGameData()) {
-                GmaeDataController.setGameDataManager(manager);
+                GameDataController.setGameDataManager(manager);
                 SpringApplication.run(Application.class, args);
             }
         }
