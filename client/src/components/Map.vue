@@ -1,10 +1,9 @@
-<!-- 测试页面 -->
 <template>
     <div class="control">
-        <div>玩家数量:{{ playerNum }}</div>
-        <div>tick:{{ gameInfo.tick }}</div>
-        <div>avgTick:{{ parseInt(allTickVal / tickTimes) }}</div>
-        <div @click="opchange()">人物跟随开关<input type="checkbox" v-model="isOpenFlow" /></div>
+        <div>Number of players:{{ playerNum }}</div>
+        <div>Tick:{{ gameInfo.tick }}</div>
+        <div>Average tick:{{ parseInt(allTickVal / tickTimes) }}</div>
+        <div @click="opchange()">Follow character<input type="checkbox" v-model="isOpenFlow" /></div>
     </div>
     <div id="map"></div>
 </template>
@@ -19,7 +18,6 @@ import enemyIconHvd from '/src/icons/enemy_icon_hvd.png'
 import teammateIconHvd from '/src/icons/teammate_icon_hvd.png'
 
 import de_ancient_radar from '/src/map/de_ancient_radar.png'
-//import de_cache_radar from '/src/map/de_cache_radar.png'
 import de_dust2_radar from '/src/map/de_dust2_radar.png'
 import de_inferno_radar from '/src/map/de_inferno_radar.png'
 import de_mirage_radar from '/src/map/de_mirage_radar.png'
@@ -108,7 +106,6 @@ export default {
             YSize: 500
         }
     },
-    //生命周期 - 创建完成（可以访问当前this实例）
     created() {
         setInterval(() => {
             axios
@@ -126,7 +123,6 @@ export default {
                 .catch()
         }, 100)
     },
-    //生命周期 - 挂载完成（可以访问DOM元素）
     mounted() {
         that = this
         window.addEventListener('keydown', this.KeyDown, true)
@@ -152,18 +148,14 @@ export default {
             }
         },
         initKnowMap() {
-            //当变更地图
-            //更新地图
             if (that.lastMapName != that.gameInfo.mapName) {
                 that.lastMapName = that.gameInfo.mapName
-                //加载单张图
                 if (that.imageOverLay != null) {
                     this.allTickVal = 0
                     this.tickTimes = 0
                     that.map.removeLayer(that.imageOverLay)
                 }
                 this.imageOverLay = L.imageOverlay(mapRadar[that.gameInfo.mapName].map, mapRadar[that.gameInfo.mapName].bounds).addTo(this.map)
-                //this.imageOverLay = L.imageOverlay(mapRadar[that.gameInfo.mapName].map, this.bounds).addTo(this.map);
             }
         },
         initUnKnowMap() {
@@ -223,7 +215,6 @@ export default {
             that.map.addLayer(that.layerGroup)
         },
         reloadMap() {
-            //加载单张图
             if (that.imageOverLay != null) {
                 that.map.removeLayer(that.imageOverLay)
             }
@@ -277,7 +268,6 @@ export default {
                 this.reloadMap()
             }
         },
-        // 初始化地图
         initMap() {
             this.map = L.map('map', {
                 center: [0, 0],
@@ -296,6 +286,7 @@ export default {
     }
 }
 </script>
+
 <style scoped>
 #map {
     position: absolute;
