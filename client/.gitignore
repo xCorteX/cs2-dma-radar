@@ -1,5 +1,0 @@
-#ignore config files
-.env
-
-#ignore node dependencies
-node_modules

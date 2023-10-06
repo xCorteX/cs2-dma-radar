@@ -1,0 +1,14 @@
+### APPLICATION ###
+app/target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+app/src/main/resources/static
+
+### VITE ###
+client/.env
+client/node_modules
+
+### RELEASE ###
+release/*.jar
+release/*.json
