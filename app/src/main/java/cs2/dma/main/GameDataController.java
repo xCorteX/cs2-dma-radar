@@ -10,12 +10,12 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-public class GmaeDataController {
+public class GameDataController {
 
     private static GameDataManager gameDataManager;
 
     public static void setGameDataManager(GameDataManager gameDataManager) {
-        GmaeDataController.gameDataManager = gameDataManager;
+        GameDataController.gameDataManager = gameDataManager;
     }
 
     @RequestMapping("/getGameData")
