@@ -1,6 +1,6 @@
 {
-    "name": "vue3_cli_default",
-    "version": "0.0.0",
+    "name": "cs2-dma-radar",
+    "version": "1.0.0",
     "scripts": {
         "dev": "vite",
         "build": "vite build",
