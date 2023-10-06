@@ -6,8 +6,7 @@ import java.io.Serializable;
  * @see https://github.com/ufrisk/MemProcFS
  * @author Ulf Frisk - pcileech@frizk.net
  */
-public class VmmMap_HandleEntry implements Serializable
-{
+public class VmmMap_HandleEntry implements Serializable {
     private static final long serialVersionUID = 7952416272217348610L;
     public long vaObject;
     public int dwHandle;
@@ -20,7 +19,7 @@ public class VmmMap_HandleEntry implements Serializable
     public int dwPID;
     public String tag;
     public String type;
-    
+
     public String toString() {
         return "VmmMap_HandleEntry:'" + name + "'";
     }

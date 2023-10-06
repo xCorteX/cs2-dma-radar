@@ -7,17 +7,19 @@ import com.sun.jna.ptr.PointerByReference;
 
 /**
  * JNA native code wrapper for LeechCore.
+ * 
  * @see https://github.com/ufrisk/MemProcFS
  * @author Ulf Frisk - pcileech@frizk.net
  */
 interface LeechCoreNative extends Library {
-    static final int MAX_PATH                        = 260;
-    
-    static final int LC_CONFIG_VERSION                 = 0xc0fd0002;
-    
+    static final int MAX_PATH = 260;
+
+    static final int LC_CONFIG_VERSION = 0xc0fd0002;
+
     LeechCoreNative INSTANCE = Native.load("leechcore", LeechCoreNative.class);
-    
-    @Structure.FieldOrder({"dwVersion", "dwPrintfVerbosity", "szDevice", "szRemote", "pfn_printf_opt", "paMax", "fVolatile", "fWritable", "fRemote", "fRemoteDisableCompress", "szDeviceName"})
+
+    @Structure.FieldOrder({ "dwVersion", "dwPrintfVerbosity", "szDevice", "szRemote", "pfn_printf_opt", "paMax",
+            "fVolatile", "fWritable", "fRemote", "fRemoteDisableCompress", "szDeviceName" })
     class LC_CONFIG extends Structure {
         public int dwVersion;
         public int dwPrintfVerbosity;
@@ -31,25 +33,34 @@ interface LeechCoreNative extends Library {
         public boolean fRemoteDisableCompress;
         public byte[] szDeviceName = new byte[MAX_PATH];
     }
-    
+
     Pointer LcCreate(LC_CONFIG pLcCreateConfig);
+
     void LcClose(Pointer hLC);
+
     long LcMemFree(Pointer pvMem);
+
     boolean LcRead(Pointer hLC, long pa, int cb, byte[] pb);
+
     boolean LcWrite(Pointer hLC, long pa, int cb, byte[] pb);
+
     boolean LcGetOption(Pointer hLC, long fOption, LongByReference pqwValue);
+
     boolean LcSetOption(Pointer hLC, long fOption, long qwValue);
-    boolean LcCommand(Pointer hLC, long fCommand, int cbDataIn, Pointer pbDataIn, PointerByReference ppbDataOut, IntByReference pcbDataOut);
-    
+
+    boolean LcCommand(Pointer hLC, long fCommand, int cbDataIn, Pointer pbDataIn, PointerByReference ppbDataOut,
+            IntByReference pcbDataOut);
+
     interface CALLBACK_BAR extends Callback {
         void invoke(LC_BAR_REQUEST req);
     }
-    
+
     interface CALLBACK_TLP extends Callback {
         void invoke(int ctxNative, int cbTlp, Pointer pbTlp, int cbInfo, String szInfo);
     }
-    
-    @Structure.FieldOrder({"fValid", "fIO", "f64Bit", "fPrefetchable", "iBar", "_Filler0", "_Filler1", "_Filler2", "pa", "cb"})
+
+    @Structure.FieldOrder({ "fValid", "fIO", "f64Bit", "fPrefetchable", "iBar", "_Filler0", "_Filler1", "_Filler2",
+            "pa", "cb" })
     class LC_BAR extends Structure {
         public boolean fValid;
         public boolean fIO;
@@ -61,26 +72,26 @@ interface LeechCoreNative extends Library {
         public int iBar;
         public long pa;
         public long cb;
-        
+
         public LC_BAR(Pointer p) {
             super(p);
             read();
         }
     }
-    
-    @Structure.FieldOrder({"bars"})
+
+    @Structure.FieldOrder({ "bars" })
     class LC_BAR_6 extends Structure {
         public LC_BAR[] bars;
-        
-        LC_BAR_6(Pointer p)
-        {
+
+        LC_BAR_6(Pointer p) {
             super(p);
             bars = new LC_BAR[6];
             read();
         }
     }
-    
-    @Structure.FieldOrder({"ctx", "pBar", "bTag", "bFirstBE", "bLastBE", "_Filler", "f64", "fRead", "fReadReply", "fWrite", "cbData", "oData", "pbData"})
+
+    @Structure.FieldOrder({ "ctx", "pBar", "bTag", "bFirstBE", "bLastBE", "_Filler", "f64", "fRead", "fReadReply",
+            "fWrite", "cbData", "oData", "pbData" })
     class LC_BAR_REQUEST extends Structure {
         public Pointer ctx;
         public Pointer pBar;
@@ -98,8 +109,9 @@ interface LeechCoreNative extends Library {
     }
 }
 
-interface LeechCoreNativeEx extends Library
-{
+interface LeechCoreNativeEx extends Library {
     LeechCoreNativeEx INSTANCE = Native.load("leechcore", LeechCoreNativeEx.class);
-    boolean LcCommand(Pointer hLC, long fCommand, int cbDataIn, Callback pbDataIn, PointerByReference ppbDataOut, IntByReference pcbDataOut);
+
+    boolean LcCommand(Pointer hLC, long fCommand, int cbDataIn, Callback pbDataIn, PointerByReference ppbDataOut,
+            IntByReference pcbDataOut);
 }

@@ -10,16 +10,29 @@ public class PlayerInfo {
     private boolean isAlive;
     private boolean isLocalPlayer;
     private boolean isEnemy;
-    private  float x;
-    private  float y;
-    private  float z;
-    private  float Angles;
-    private  boolean isSameLevel;
+    private float x;
+    private float y;
+    private float z;
+    private float Angles;
+    private boolean isSameLevel;
 
     public PlayerInfo() {
     }
 
-    public PlayerInfo(long entityAddress, long entityPawnAddress, int teamId, int health, int armor, boolean isAlive, boolean isLocalPlayer, boolean isEnemy, float x, float y, float z, float angles,boolean isSameLevel) {
+    public PlayerInfo(
+            long entityAddress,
+            long entityPawnAddress,
+            int teamId,
+            int health,
+            int armor,
+            boolean isAlive,
+            boolean isLocalPlayer,
+            boolean isEnemy,
+            float x,
+            float y,
+            float z,
+            float angles,
+            boolean isSameLevel) {
         this.entityAddress = entityAddress;
         this.entityPawnAddress = entityPawnAddress;
         this.teamId = teamId;
@@ -32,7 +45,7 @@ public class PlayerInfo {
         this.y = y;
         this.z = z;
         this.Angles = angles;
-        this.isSameLevel=isSameLevel;
+        this.isSameLevel = isSameLevel;
     }
 
     public boolean isSameLevel() {
