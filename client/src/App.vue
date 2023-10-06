@@ -1,14 +1,10 @@
-<script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-
-import Map from './components/Map.vue'
-</script>
-
 <template>
-  
   <Map msg="CS2_DMA_Radar" />
 </template>
+
+<script setup>
+import Map from "./components/Map.vue";
+</script>
 
 <style>
 #app {
@@ -20,4 +16,3 @@ import Map from './components/Map.vue'
   margin-top: 60px;
 }
 </style>
-
