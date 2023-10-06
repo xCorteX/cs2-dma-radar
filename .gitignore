@@ -1,3 +1,6 @@
+### IDE ###
+.vscode/
+
 ### APPLICATION ###
 app/target/
 !.mvn/wrapper/maven-wrapper.jar
