@@ -6,11 +6,45 @@ import vmm.IVmm;
 import vmm.IVmmProcess;
 
 import java.util.*;
+import java.io.FileReader;
+import com.alibaba.fastjson.parser.DefaultJSONParser;
 
 public class GameDataManager {
+    private static long dwLocalPlayerPawn = 0x0;
+    private static long dwEntityList = 0x0;
 
-    private static long dwLocalPlayerPawn = 0x1875C48;
-    private static long dwEntityList = 0x17888D8;
+    static {
+        try {
+            System.out.println("[+] Read offsets.json file");
+
+            FileReader reader = new FileReader("offsets.json");
+            char[] buf = new char[1024];
+            int len = 0;
+
+            StringBuilder sb = new StringBuilder();
+            while ((len = reader.read(buf)) != -1) {
+                sb.append(buf, 0, len);
+            }
+
+            String json = sb.toString();
+
+            reader.close();
+
+            DefaultJSONParser parser = new DefaultJSONParser(json);
+            Map<String, String> map = parser.parseObject(Map.class, Long.class);
+
+            dwLocalPlayerPawn += Long.parseLong(map.get("dwLocalPlayerPawn").replace("0x", ""), 16);
+            dwEntityList += Long.parseLong(map.get("dwEntityList").replace("0x", ""), 16);
+
+            System.out.println("[+] dwLocalPlayerPawn: " + dwLocalPlayerPawn);
+            System.out.println("[+] dwEntityList: " + dwEntityList);
+
+            parser.close();
+        } catch (Exception e) {
+            System.out.println("[-] Failed to read offsets.json file: " + e.getMessage());
+            System.exit(1);
+        }
+    }
 
     private String knowMap = "de_ancient,de_dust2,de_inferno,de_mirage,de_nuke,de_overpass,de_vertigo";
     private static String[] argvMemProcFS = { "", "-device", "FPGA" };
@@ -51,6 +85,11 @@ public class GameDataManager {
             }
         }
 
+        if (gameProcess == null) {
+            System.out.println("[-] Failed to find cs2.exe process");
+            return false;
+        }
+
         memoryTool = new MemoryTool(gameProcess);
         clientAddress = memoryTool.getModuleAddress("client.dll");
         mapNameAddress = memoryTool.getModuleAddress("matchmaking.dll");
@@ -67,7 +106,6 @@ public class GameDataManager {
     }
 
     public void initPlayerInfo() {
-
         mapName = memoryTool.readString(mapNameAddress + 0x4, 32);
         LocalPlayerController = memoryTool.readAddress(clientAddress + dwLocalPlayerPawn, 8);
         if (LocalPlayerController == 0) {

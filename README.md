@@ -28,3 +28,9 @@ Then you should be able to access the radar at http://localhost:8080
 3. Build application: `make build`
 4. Move to the release directory: `cd release`
 5. Start the application: `java -jar cs2-dma-radar.jar`
+
+## Offsets
+
+The offsets are store in a file called `offsets.json` in the root directory of the application.
+To get the latest offsets you can the [cs2-dumper](https://github.com/a2x/cs2-dumper) by a2x.
+If you don't want to dump them yourself, you can use the offsets from [here](https://github.com/a2x/cs2-dumper/blob/main/generated/offsets.rs).
