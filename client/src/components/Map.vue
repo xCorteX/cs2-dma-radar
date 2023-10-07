@@ -4,6 +4,8 @@
         <div>Tick:{{ gameInfo.tick }}</div>
         <div>Average tick:{{ parseInt(allTickVal / tickTimes) }}</div>
         <div @click="opchange()">Follow character<input type="checkbox" v-model="isOpenFlow" /></div>
+        <div @click="showTeammatesChange()">Show teammates<input type="checkbox" v-model="showTeammates" /></div>
+        <div @click="showEnemiesChanges()">Show enemies<input type="checkbox" v-model="showEnemies" /></div>
     </div>
     <div id="map"></div>
 </template>
@@ -92,6 +94,8 @@ export default {
             allTickVal: 0,
             tickTimes: 0,
             isOpenFlow: false,
+            showTeammates: true,
+            showEnemies: true,
             zoom: 1,
             lastMapName: null,
             gameInfo: {},
@@ -132,6 +136,12 @@ export default {
         opchange() {
             this.isOpenFlow = !this.isOpenFlow
         },
+        showTeammatesChange() {
+            this.showTeammates = !this.showTeammates
+        },
+        showEnemiesChanges() {
+            this.showEnemies = !this.showEnemies
+        },
         initPlayerList(data) {
             let MarkerList = []
             let knowMap = true
@@ -170,6 +180,14 @@ export default {
             let mlist = []
             data.forEach((item) => {
                 if (item.alive) {
+                    if (!this.showEnemies && item.enemy) {
+                        return
+                    }
+
+                    if (!this.showTeammates && !item.enemy) {
+                        return
+                    }
+
                     let potin = L.latLng(item.x / 10, item.y / 10)
                     let icon = L.icon({
                         iconUrl: item.localPlayer
@@ -184,6 +202,7 @@ export default {
                         iconSize: [40, 40],
                         iconAnchor: [19, 25]
                     })
+
                     if (item.localPlayer && this.isOpenFlow) {
                         this.map.flyTo(potin, this.map.getZoom())
                     }
