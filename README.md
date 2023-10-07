@@ -1,18 +1,30 @@
-# CS2 DMA RADAR
+# CS2 DMA Radar
 
-Usage
+> Fork of [CS2_DMA_Radar](https://github.com/MoZiHao/CS2_DMA_Radar) with some improvements.
 
-Run with commands after compilation
+If you just want to use the radar, you can download the latest release [here](https://github.com/rabume/cs2-dma-radar/releases)
 
-java -jar CS2DMA-0.0.1.jar
+## 🚀 Usage
 
-http://localhost:8080/
+After you complied or downloaded the latest release, you can start the radar with the following command:
 
-For the first time learning to write DMA radar, this is an exercise project, so the code is quite chaotic. Please don't mind.
+```bash
+java -jar cs2-dma-radar.jar
+```
 
-This code will not be maintained for a long time, so when you try to compile and run it, it may not run. You need to update the CS2 base address in the code.
+Then you should be able to access the radar at http://localhost:8080
 
-You can find the latest CS2 game base address and offset here
+## ⚡️ Requirements
 
-https://github.com/a2x/cs2-dumper/blob/main/generated/offsets.rs
-https://github.com/a2x/cs2-dumper/blob/main/generated/client.dll.hpp
+- nodejs (>= 20.3.0)
+- Java Development Kit (>= 20)
+- Apache Maven (>= 3.8.7)
+- make (>= GNU Make 4.4.1)
+
+## 🛠️ Build
+
+1. Install frontend dependencies: `cd client && npm i`
+2. Move back to the root directory: `cd ..`
+3. Build application: `make build`
+4. Move to the release directory: `cd release`
+5. Start the application: `java -jar cs2-dma-radar.jar`
