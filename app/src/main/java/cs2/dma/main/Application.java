@@ -24,17 +24,16 @@ public class Application {
                 SpringApplication.run(Application.class, args);
             } else {
                 handleInitializationError(
-                        "Failed to initialize game data. Please ensure your game data is set up correctly.");
+                        "Failed to initialize game data.");
             }
         } else {
             handleInitializationError(
-                    "Failed to initialize VMM. Please check if the connected PCI card is working properly.");
+                    "Failed to initialize VMM.");
         }
     }
 
     private static void handleInitializationError(String errorMessage) {
         System.out.println("[-] Initialization Error: " + errorMessage);
-        System.out.println("[-] Make sure you have connected the PCI card and started your game.");
         System.exit(1);
     }
 
