@@ -113,7 +113,7 @@ export default {
     created() {
         setInterval(() => {
             axios
-                .get('http://127.0.0.1:8080/getGameData')
+                .get('/getGameData')
                 .then((response) => {
                     if (response.data != '') {
                         that.gameInfo.mapName = response.data.mapName
