@@ -2,6 +2,8 @@
 
 > Fork of [CS2_DMA_Radar](https://github.com/MoZiHao/CS2_DMA_Radar) with some improvements.
 
+![Capture](https://github.com/rabume/cs2-dma-radar/assets/19410629/b2097ba8-eda5-4a09-bf11-e643f0699c8b)
+
 If you just want to use the radar, you can download the latest release [here](https://github.com/rabume/cs2-dma-radar/releases)
 
 ## 🚀 Usage
