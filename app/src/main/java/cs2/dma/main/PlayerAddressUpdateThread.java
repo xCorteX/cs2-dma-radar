@@ -56,7 +56,7 @@ public class PlayerAddressUpdateThread extends Thread {
         long EntityPawnListEntry = memoryTool.readAddress(clientAddress + dwEntityList, 8);
         if (EntityPawnListEntry == 0)
             return;
-        long Pawn = memoryTool.readAddress(EntityAddress + 0x7FC, 8);
+        long Pawn = memoryTool.readAddress(EntityAddress + 0x7BC, 8);
         if (Pawn == 0)
             return;
         EntityPawnListEntry = memoryTool.readAddress(EntityPawnListEntry + 0x10 + 8 * ((Pawn & 0x7FFF) >> 9), 8);
@@ -99,9 +99,9 @@ public class PlayerAddressUpdateThread extends Thread {
                     EntityAddress,
                     Pawn,
                     teamId,
-                    memoryTool.readInt(EntityAddress + 0x808, 4),
-                    memoryTool.readInt(EntityAddress + 0x80C, 4),
-                    memoryTool.readInt(EntityAddress + 0x804, 4) != 0,
+                    memoryTool.readInt(EntityAddress + 0x7C8, 4),
+                    memoryTool.readInt(EntityAddress + 0x7CC, 4),
+                    memoryTool.readInt(EntityAddress + 0x7C4, 4) != 0,
                     LocalPlayerController == Pawn,
                     memoryTool.readInt(LocalPlayerController + 0x3bf, 4) != teamId,
                     newX,
