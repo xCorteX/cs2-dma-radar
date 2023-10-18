@@ -20,6 +20,7 @@ import enemyIconHvd from '/src/icons/enemy_icon_hvd.png'
 import teammateIconHvd from '/src/icons/teammate_icon_hvd.png'
 
 import de_ancient_radar from '/src/map/de_ancient_radar.png'
+import de_anubis_radar from '/src/map/de_anubis_radar.png'
 import de_dust2_radar from '/src/map/de_dust2_radar.png'
 import de_inferno_radar from '/src/map/de_inferno_radar.png'
 import de_mirage_radar from '/src/map/de_mirage_radar.png'
@@ -36,6 +37,13 @@ var mapRadar = {
         bounds: [
             [-294, -289],
             [217, 213]
+        ]
+    },
+    de_anubis: {
+        map: de_anubis_radar,
+        bounds: [
+            [-200, -275],
+            [333, 250]
         ]
     },
     de_dust2: {
