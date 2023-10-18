@@ -81,10 +81,10 @@ public class PlayerAddressUpdateThread extends Thread {
                     memoryTool.readFloat(Pawn + 0xCD8 + 0x4, 8),
                     memoryTool.readFloat(Pawn + 0xCD8, 8),
                     playerZ,
-                    90 - memoryTool.readFloat(Pawn + 0x1504, 8),
+                    90 - memoryTool.readFloat(Pawn + 0x14f8 + 0x4, 8),
                     levelDv < levelHeight);
         } else {
-            float angle = memoryTool.readFloat(LocalPlayerController + 0x1504, 8) - 90;
+            float angle = memoryTool.readFloat(LocalPlayerController + 0x14f8 + 0x4, 8) - 90;
             int teamId = memoryTool.readInt(EntityAddress + 0x3bf, 4);
             float pX = memoryTool.readFloat(Pawn + 0xCD8 + 0x4, 8);
             float pY = memoryTool.readFloat(Pawn + 0xCD8, 8);
@@ -107,7 +107,7 @@ public class PlayerAddressUpdateThread extends Thread {
                     newX,
                     newY,
                     playerZ,
-                    90 - memoryTool.readFloat(Pawn + 0x1504, 8) + angle,
+                    90 - memoryTool.readFloat(Pawn + 0x14f8 + 0x4, 8) + angle,
                     levelDv < levelHeight);
         }
     }
