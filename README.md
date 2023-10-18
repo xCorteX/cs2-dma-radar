@@ -4,14 +4,15 @@
 
 ![Capture](https://github.com/rabume/cs2-dma-radar/assets/19410629/b2097ba8-eda5-4a09-bf11-e643f0699c8b)
 
-If you just want to use the radar, you can download the latest release [here](https://github.com/rabume/cs2-dma-radar/releases)
+> If you just want to use the radar, you can download the latest release [here](https://github.com/rabume/cs2-dma-radar/releases)
+> Requirements to run latest release: [JDK 21](https://adoptium.net/temurin/releases/?os=windows&arch=x64&package=jdk&version=21)
 
 ## 🚀 Usage
 
 After you complied or downloaded the latest release, you can start the radar with the following command:
 
 ```bash
-java -jar cs2-dma-radar.jar
+java -jar CS2DMA-1.0.jar
 ```
 
 Then you should be able to access the radar at http://localhost:8080
@@ -29,7 +30,7 @@ Then you should be able to access the radar at http://localhost:8080
 2. Move back to the root directory: `cd ..`
 3. Build application: `make build`
 4. Move to the release directory: `cd release`
-5. Start the application: `java -jar cs2-dma-radar.jar`
+5. Start the application: `java -jar CS2DMA-1.0.jar`
 
 ## Offsets
 
