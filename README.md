@@ -36,4 +36,4 @@ Then you should be able to access the radar at http://localhost:8080
 
 The offsets are store in a file called `offsets.json` in the root directory of the application.
 To get the latest offsets you can the [cs2-dumper](https://github.com/a2x/cs2-dumper) by a2x.
-If you don't want to dump them yourself, you can use the offsets from [here](https://github.com/a2x/cs2-dumper/blob/main/generated/offsets.rs).
+If you don't want to dump them yourself, you can use the offsets from [offsets.rs](https://github.com/a2x/cs2-dumper/blob/main/generated/offsets.rs) and [client.dll.hpp](https://github.com/a2x/cs2-dumper/blob/main/generated/client.dll.hpp).
