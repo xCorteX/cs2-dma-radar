@@ -19,10 +19,10 @@ Then you should be able to access the radar at http://localhost:8080
 
 ## ⚡️ Requirements
 
-- nodejs (>= 20.3.0)
-- Java Development Kit (>= 20)
-- Apache Maven (>= 3.8.7)
-- make (>= GNU Make 4.4.1)
+- nodejs (>= 20.3.0) -> Use nvm or directly install nodejs
+- Java Development Kit (>= 21) -> [Download](https://adoptium.net/temurin/releases/?os=windows&arch=x64&package=jdk&version=21)
+- Apache Maven (>= 3.8.7) -> [Download](https://maven.apache.org/download.cgi)
+- make (>= GNU Make 4.4.1) -> Use cygwin or install make directly: [Download](https://www.cygwin.com/)
 
 ## 🛠️ Build
 
