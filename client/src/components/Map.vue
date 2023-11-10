@@ -19,6 +19,7 @@ import teammateIcon from '/src/icons/teammate_icon.png'
 import enemyIconHvd from '/src/icons/enemy_icon_hvd.png'
 import teammateIconHvd from '/src/icons/teammate_icon_hvd.png'
 
+import cs_office_radar from '/src/map/cs_office_radar.png'
 import de_ancient_radar from '/src/map/de_ancient_radar.png'
 import de_anubis_radar from '/src/map/de_anubis_radar.png'
 import de_dust2_radar from '/src/map/de_dust2_radar.png'
@@ -32,6 +33,13 @@ import de_vertigo_radar from '/src/map/de_vertigo_radar.png'
 
 var that
 var mapRadar = {
+        cs_office: {
+            map: cs_office_radar,
+            bounds: [
+                [-234, -184],
+                [185, 240] 
+            ]
+        },
     de_ancient: {
         map: de_ancient_radar,
         bounds: [
