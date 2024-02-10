@@ -17,13 +17,13 @@ public class PlayerAddressUpdateThread extends Thread {
     private long dwEntityList;
 
     // Offsets
-    private static final int m_iPawnHealth = 0x7F8; // client.dll m_iPawnHealth
-    private static final int m_iPawnArmor = 0x7FC; // client.dll m_iPawnArmor
-    private static final int m_bPawnIsAlive = 0x7F4; // client.dll m_bPawnIsAlive
-    private static final int m_angEyeAngles = 0x1518; // client.dll m_angEyeAngles
-    private static final int m_iTeamNum = 0x3BF; // client.dll m_iTeamNum
-    private static final int m_hPlayerPawn = 0x7EC; // client.dll m_hPlayerPawn
-    private static final int Player_Position = 0xCD8; // PlayerPosition X //+ 0x4 Y //+ 0x8 Z
+    private static final int m_iPawnHealth = 0x7F0; // client.dll m_iPawnHealth
+    private static final int m_iPawnArmor = 0x7F4; // client.dll m_iPawnArmor
+    private static final int m_bPawnIsAlive = 0x7EC; // client.dll m_bPawnIsAlive
+    private static final int m_angEyeAngles = 0x1578; // client.dll m_angEyeAngles
+    private static final int m_iTeamNum = 0x3CB; // client.dll m_iTeamNum
+    private static final int m_hPlayerPawn = 0x7E4; // client.dll m_hPlayerPawn
+    private static final int m_vOldOrigin = 0x127C; // PlayerPosition X //+ 0x4 Y //+ 0x8 Z
 
     public void setKnowMap(boolean knowMap) {
         isKnowMap = knowMap;
@@ -72,10 +72,10 @@ public class PlayerAddressUpdateThread extends Thread {
         Pawn = memoryTool.readAddress(EntityPawnListEntry + 0x78 * (Pawn & 0x1FF), 8);
         if (Pawn == 0)
             return;
-        float localPlayerZ = memoryTool.readFloat(LocalPlayerController + Player_Position + 0x8, 4);
+        float localPlayerZ = memoryTool.readFloat(LocalPlayerController + m_vOldOrigin + 0x8, 4);
         if (isKnowMap) {
             int teamId = memoryTool.readInt(EntityAddress + m_iTeamNum, 4);
-            float playerZ = memoryTool.readFloat(Pawn + Player_Position + 0x8, 4);
+            float playerZ = memoryTool.readFloat(Pawn + m_vOldOrigin + 0x8, 4);
             float levelDv = playerZ - localPlayerZ;
             levelDv = (levelDv < 0) ? -levelDv : levelDv;
             playerInfo = new PlayerInfo(
@@ -87,20 +87,20 @@ public class PlayerAddressUpdateThread extends Thread {
                     memoryTool.readInt(EntityAddress + m_bPawnIsAlive, 4) != 0,
                     LocalPlayerController == Pawn,
                     memoryTool.readInt(LocalPlayerController + m_iTeamNum, 4) != teamId,
-                    memoryTool.readFloat(Pawn + Player_Position + 0x4, 4),
-                    memoryTool.readFloat(Pawn + Player_Position, 4),
+                    memoryTool.readFloat(Pawn + m_vOldOrigin + 0x4, 4),
+                    memoryTool.readFloat(Pawn + m_vOldOrigin, 4),
                     playerZ,
                     90 - memoryTool.readFloat(Pawn + m_angEyeAngles + 0x4, 8),
                     levelDv < levelHeight);
         } else {
             float angle = memoryTool.readFloat(LocalPlayerController + m_angEyeAngles + 0x4, 8) - 90;
             int teamId = memoryTool.readInt(EntityAddress + m_iTeamNum, 4);
-            float pX = memoryTool.readFloat(Pawn + Player_Position + 0x4, 4);
-            float pY = memoryTool.readFloat(Pawn + Player_Position, 4);
+            float pX = memoryTool.readFloat(Pawn + m_vOldOrigin + 0x4, 4);
+            float pY = memoryTool.readFloat(Pawn + m_vOldOrigin, 4);
             float newX = pX * (float) Math.cos(Math.toRadians(angle)) - pY * (float) Math.sin(Math.toRadians(angle));
             float newY = pX * (float) Math.sin(Math.toRadians(angle)) + pY * (float) Math.cos(Math.toRadians(angle));
 
-            float playerZ = memoryTool.readFloat(Pawn + Player_Position + 0x8, 4);
+            float playerZ = memoryTool.readFloat(Pawn + m_vOldOrigin + 0x8, 4);
             float levelDv = playerZ - localPlayerZ;
             levelDv = (levelDv < 0) ? -levelDv : levelDv;
 
