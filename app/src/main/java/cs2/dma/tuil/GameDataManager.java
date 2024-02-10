@@ -106,7 +106,11 @@ public class GameDataManager {
     }
 
     public void initPlayerInfo() {
-        mapName = memoryTool.readString(mapNameAddress + 0x4, 32);
+        // TODO: Get write offset. 0x1CC200 is outdated.
+        // mapName = memoryTool.readString(mapNameAddress + 0x4, 8);
+
+        mapName = "de_dust2";
+
         LocalPlayerController = memoryTool.readAddress(clientAddress + dwLocalPlayerPawn, 8);
         if (LocalPlayerController == 0) {
             return;
