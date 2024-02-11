@@ -93,7 +93,7 @@ public class GameDataManager {
         memoryTool = new MemoryTool(gameProcess);
         clientAddress = memoryTool.getModuleAddress("client.dll");
         mapNameAddress = memoryTool.getModuleAddress("matchmaking.dll");
-        mapNameAddress = memoryTool.readAddress(mapNameAddress + 0x1CC200, 8);
+        mapNameAddress = memoryTool.readAddress(mapNameAddress + 0x001D2300, 8);
         EntityList = memoryTool.readAddress(clientAddress + dwEntityList, 8);
         EntityList = memoryTool.readAddress(EntityList + 0x10, 8);
 
@@ -106,8 +106,7 @@ public class GameDataManager {
     }
 
     public void initPlayerInfo() {
-        // TODO: Get write offset. 0x1CC200 is outdated.
-        // mapName = memoryTool.readString(mapNameAddress + 0x4, 8);
+        mapName = memoryTool.readString(mapNameAddress + 0x4, 8);
 
         mapName = "de_dust2";
 
