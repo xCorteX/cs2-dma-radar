@@ -108,8 +108,6 @@ public class GameDataManager {
     public void initPlayerInfo() {
         mapName = memoryTool.readString(mapNameAddress + 0x4, 8);
 
-        mapName = "de_dust2";
-
         LocalPlayerController = memoryTool.readAddress(clientAddress + dwLocalPlayerPawn, 8);
         if (LocalPlayerController == 0) {
             return;
