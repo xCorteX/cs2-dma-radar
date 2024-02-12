@@ -24,6 +24,18 @@ Then you should be able to access the radar at http://localhost:8080
 - Apache Maven (>= 3.8.7) -> [Download](https://maven.apache.org/download.cgi)
 - make (>= GNU Make 4.4.1) -> Use cygwin or install make directly: [Download](https://www.cygwin.com/)
 
+#### 🚨 Note
+Only tested on Windows. The release provides the necessary Dynamic Link Libraries (DLLs). To run on Linux, you need to obtain 
+the Shared Object (.so) files yourself and replace the ones in the release directory. Also the paths have to be adjusted.
+
+**Client still has to run Windows!**
+
+The required files are: 
+- [leechcore.so](https://github.com/ufrisk/LeechCore/releases)
+- [vmm.so](https://github.com/ufrisk/MemProcFS/releases)
+- [FTD3XX.so](https://ftdichip.com/drivers/d3xx-drivers/)
+
+
 ## 🛠️ Build
 
 1. Install frontend dependencies: `cd client && npm i`
