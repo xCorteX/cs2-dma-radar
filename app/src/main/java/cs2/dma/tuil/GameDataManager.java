@@ -106,7 +106,7 @@ public class GameDataManager {
     }
 
     public void initPlayerInfo() {
-        mapName = memoryTool.readString(mapNameAddress + 0x4, 8);
+        mapName = memoryTool.readString(mapNameAddress + 0x4, 32);
 
         LocalPlayerController = memoryTool.readAddress(clientAddress + dwLocalPlayerPawn, 8);
         if (LocalPlayerController == 0) {
