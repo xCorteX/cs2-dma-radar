@@ -28,6 +28,9 @@ import de_nuke_radar from '/src/map/de_nuke_radar.png'
 import de_overpass_radar from '/src/map/de_overpass_radar.png'
 import de_vertigo_lower_radar from '/src/map/de_vertigo_lower_radar.png'
 import de_vertigo_radar from '/src/map/de_vertigo_radar.png'
+import ar_baggage_radar from '/src/map/ar_baggage_radar.png'
+import ar_baggage_lower_radar from '/src/map/ar_baggage_lower_radar.png'
+import ar_shoots_radar from '/src/map/ar_shoots_radar.png'
 
 var that
 var mapRadar = {
@@ -99,8 +102,26 @@ var mapRadar = {
             [-223, -312],
             [172, 84]
         ]
+    },
+    ar_baggage: {
+        needChangeMap: true,
+        map: ar_baggage_radar,
+        mapLower: ar_baggage_lower_radar,
+        lowerValue: -480,
+        bounds: [
+            [-441, -329],
+            [304, 357]
+        ]
+    },
+    ar_shoots: {
+        map: ar_shoots_radar,
+        bounds: [
+            [-441, -329],
+            [304, 357]
+        ]
     }
 }
+
 export default {
     data() {
         return {

@@ -46,7 +46,7 @@ public class GameDataManager {
         }
     }
 
-    private String knowMap = "de_ancient,de_dust2,de_inferno,de_mirage,de_nuke,de_overpass,de_vertigo,de_anubis,cs_office";
+    private String knowMap = "de_ancient,de_dust2,de_inferno,de_mirage,de_nuke,de_overpass,de_vertigo,de_anubis,cs_office,ar_baggage,ar_shoots";
     private static String[] argvMemProcFS = { "", "-device", "FPGA" };
 
     private static IVmmProcess gameProcess;

@@ -3,7 +3,7 @@ MVN_CLEAN := clean
 MVN_PACKAGE := package
 
 .DEFAULT_GOAL := all
-.PHONY: all build clean
+.PHONY: all build clean release
 
 all: build
 
@@ -25,3 +25,7 @@ clean:
 	@cd client && rm -rf dist
 	@rm -rf release/*.jar
 
+release:
+	@echo "Creating release zip..."
+	@cd release && zip -r release.zip ./*
+	@mv release/release.zip ./
