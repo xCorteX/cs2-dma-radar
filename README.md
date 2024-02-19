@@ -12,7 +12,7 @@
 After you complied or downloaded the latest release, you can start the radar with the following command:
 
 ```bash
-java -jar CS2DMA-1.0.jar
+java -jar CS2DMA-1.2.0.jar
 ```
 
 Then you should be able to access the radar at http://localhost:8080
@@ -25,16 +25,17 @@ Then you should be able to access the radar at http://localhost:8080
 - make (>= GNU Make 4.4.1) -> Use cygwin or install make directly: [Download](https://www.cygwin.com/)
 
 #### 🚨 Note
-Only tested on Windows. The release provides the necessary Dynamic Link Libraries (DLLs). To run on Linux, you need to obtain 
+
+Only tested on Windows. The release provides the necessary Dynamic Link Libraries (DLLs). To run on Linux, you need to obtain
 the Shared Object (.so) files yourself and replace the ones in the release directory. Also the paths have to be adjusted.
 
 **Client still has to run Windows!**
 
-The required files are: 
+The required files are:
+
 - [leechcore.so](https://github.com/ufrisk/LeechCore/releases)
 - [vmm.so](https://github.com/ufrisk/MemProcFS/releases)
 - [FTD3XX.so](https://ftdichip.com/drivers/d3xx-drivers/)
-
 
 ## 🛠️ Build
 
@@ -42,7 +43,7 @@ The required files are:
 2. Move back to the root directory: `cd ..`
 3. Build application: `make build`
 4. Move to the release directory: `cd release`
-5. Start the application: `java -jar CS2DMA-1.0.jar`
+5. Start the application: `java -jar CS2DMA-1.2.0.jar`
 
 ## Offsets
 
