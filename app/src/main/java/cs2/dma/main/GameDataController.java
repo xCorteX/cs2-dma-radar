@@ -3,13 +3,13 @@ package cs2.dma.main;
 import com.alibaba.fastjson.JSONObject;
 import cs2.dma.entry.PlayerInfo;
 import cs2.dma.tuil.GameDataManager;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.stereotype.Controller;
 
 import java.util.Date;
 import java.util.List;
 
-@RestController
+@Controller
 public class GameDataController {
 
     private static GameDataManager gameDataManager;
@@ -18,8 +18,7 @@ public class GameDataController {
         GameDataController.gameDataManager = gameDataManager;
     }
 
-    @RequestMapping("/getGameData")
-    public String getGameData() {
+    public String getGameData() throws Exception {
         Date time = new Date();
         JSONObject gameData = new JSONObject();
         gameDataManager.initPlayerInfo();

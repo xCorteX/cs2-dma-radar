@@ -24,11 +24,11 @@ public class Application {
                 SpringApplication.run(Application.class, args);
             } else {
                 handleInitializationError(
-                        "Failed to initialize game data.");
+                        "[-] Failed to initialize game data.");
             }
         } else {
             handleInitializationError(
-                    "Failed to initialize VMM.");
+                    "[-] Failed to initialize VMM.");
         }
     }
 

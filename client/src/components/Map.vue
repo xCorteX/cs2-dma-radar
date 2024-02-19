@@ -11,8 +11,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 import localPlayerIcon from '/src/icons/localPlayer_icon.png'
 import enemyIcon from '/src/icons/enemy_icon.png'
 import teammateIcon from '/src/icons/teammate_icon.png'
@@ -148,21 +146,33 @@ export default {
         }
     },
     created() {
-        setInterval(() => {
-            axios
-                .get('/getGameData')
-                .then((response) => {
-                    if (response.data != '') {
-                        that.gameInfo.mapName = response.data.mapName
-                        that.gameInfo.tick = response.data.tick
-                        that.playerNum = response.data.playerList.length
-                        that.tickTimes++
-                        that.allTickVal += response.data.tick
-                        that.initPlayerList(response.data.playerList)
-                    }
-                })
-                .catch()
-        }, 100)
+        const stompClient = new StompJs.Client({
+            brokerURL: 'ws://localhost:8080/radar'
+        })
+
+        stompClient.onConnect = (frame) => {
+            console.log('Connected: ' + frame)
+            stompClient.subscribe('/topic/radar', (radar) => {
+                let msg = JSON.parse(radar.body)
+                that.gameInfo.mapName = msg.mapName
+                that.gameInfo.tick = msg.tick
+                that.playerNum = msg.length
+                that.tickTimes++
+                that.allTickVal += msg.tick
+                that.initPlayerList(msg.playerList)
+            })
+        }
+
+        stompClient.onWebSocketError = (error) => {
+            console.error('Error with websocket', error)
+        }
+
+        stompClient.onStompError = (frame) => {
+            console.error('Broker reported error: ' + frame.headers['message'])
+            console.error('Additional details: ' + frame.body)
+        }
+
+        stompClient.activate()
     },
     mounted() {
         that = this
