@@ -107,17 +107,17 @@ var mapRadar = {
         needChangeMap: true,
         map: ar_baggage_radar,
         mapLower: ar_baggage_lower_radar,
-        lowerValue: -480,
+        lowerValue: 10000,
         bounds: [
-            [-441, -329],
-            [304, 357]
+            [-441, -131],
+            [304, 369]
         ]
     },
     ar_shoots: {
         map: ar_shoots_radar,
         bounds: [
-            [-441, -329],
-            [304, 357]
+            [-372, -137],
+            [128, 364]
         ]
     }
 }
