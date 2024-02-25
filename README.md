@@ -21,7 +21,7 @@ Then you should be able to access the radar at http://localhost:8080
 
 **Hardware:**
 
-- DMA card (Only tested with [Screamer PCIe Squirrel](https://shop.lambdaconcept.com/home/50-screamer-pcie-squirrel.html)
+- DMA card -> Only tested with [Screamer PCIe Squirrel](https://shop.lambdaconcept.com/home/50-screamer-pcie-squirrel.html)
 
 **Software:**
 
