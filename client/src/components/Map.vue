@@ -146,8 +146,12 @@ export default {
         }
     },
     created() {
+        const wsProtocol = window.location.protocol == 'https:' ? 'wss' : 'ws'
+        const wsPort = window.location.port ? `:${window.location.port}` : ''
+        const wsUrl = `${wsProtocol}://${window.location.hostname}${wsPort}/radar`
+
         const stompClient = new StompJs.Client({
-            brokerURL: 'ws://localhost:8080/radar'
+            brokerURL: wsUrl
         })
 
         stompClient.onConnect = (frame) => {
