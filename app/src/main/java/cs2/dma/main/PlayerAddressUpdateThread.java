@@ -20,7 +20,7 @@ public class PlayerAddressUpdateThread extends Thread {
     private static final int m_iPawnHealth = 0x7F0; // client.dll m_iPawnHealth
     private static final int m_iPawnArmor = 0x7F4; // client.dll m_iPawnArmor
     private static final int m_bPawnIsAlive = 0x7EC; // client.dll m_bPawnIsAlive
-    private static final int m_angEyeAngles = 0x1578; // client.dll m_angEyeAngles
+    private static final int m_angEyeAngles = 0x1390; // client.dll m_angEyeAngles
     private static final int m_iTeamNum = 0x3CB; // client.dll m_iTeamNum
     private static final int m_hPlayerPawn = 0x7E4; // client.dll m_hPlayerPawn
     private static final int m_vOldOrigin = 0x127C; // PlayerPosition X //+ 0x4 Y //+ 0x8 Z
