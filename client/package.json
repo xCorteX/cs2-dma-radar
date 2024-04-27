@@ -7,13 +7,16 @@
         "serve": "vite preview"
     },
     "dependencies": {
+        "@stomp/stompjs": "^7.0.0",
         "leaflet": "^1.9.4",
         "leaflet-rotatedmarker": "^0.2.0",
         "leaflet.pm": "^2.2.0",
         "rollup-plugin-postcss": "^4.0.2",
-        "vue": "^3.2.8"
+        "vue": "^3.2.8",
+        "ws": "^8.16.0"
     },
     "devDependencies": {
+        "@types/ws": "^8.5.10",
         "@vitejs/plugin-vue": "^1.6.0",
         "@vue/compiler-sfc": "^3.2.6",
         "compression-webpack-plugin": "^10.0.0",
