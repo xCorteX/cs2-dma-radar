@@ -5,7 +5,7 @@ MVN_PACKAGE := package
 .DEFAULT_GOAL := all
 .PHONY: all build clean release
 
-all: build
+all: clean build release
 
 build:
 	@echo "Build vite app..."
