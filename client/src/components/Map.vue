@@ -12,8 +12,6 @@
 
 <script>
 import { Client } from '@stomp/stompjs'
-import { WebSocket } from 'ws'
-Object.assign(global, { WebSocket })
 
 import localPlayerIcon from '/src/icons/localPlayer_icon.png'
 import enemyIcon from '/src/icons/enemy_icon.png'
@@ -157,8 +155,7 @@ export default {
         const client = new Client({
             brokerURL: wsUrl,
             onConnect: () => {
-                console.log('Connected: ' + frame)
-                stompClient.subscribe('/topic/radar', (radar) => {
+                client.subscribe('/topic/radar', (radar) => {
                     let msg = JSON.parse(radar.body)
                     that.gameInfo.mapName = msg.mapName
                     that.gameInfo.tick = msg.tick
