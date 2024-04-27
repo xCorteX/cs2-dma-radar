@@ -11,6 +11,10 @@
 </template>
 
 <script>
+import { Client } from '@stomp/stompjs'
+import { WebSocket } from 'ws'
+Object.assign(global, { WebSocket })
+
 import localPlayerIcon from '/src/icons/localPlayer_icon.png'
 import enemyIcon from '/src/icons/enemy_icon.png'
 import teammateIcon from '/src/icons/teammate_icon.png'
@@ -150,33 +154,33 @@ export default {
         const wsPort = window.location.port ? `:${window.location.port}` : ''
         const wsUrl = `${wsProtocol}://${window.location.hostname}${wsPort}/radar`
 
-        const stompClient = new StompJs.Client({
-            brokerURL: wsUrl
+        const client = new Client({
+            brokerURL: wsUrl,
+            onConnect: () => {
+                console.log('Connected: ' + frame)
+                stompClient.subscribe('/topic/radar', (radar) => {
+                    let msg = JSON.parse(radar.body)
+                    that.gameInfo.mapName = msg.mapName
+                    that.gameInfo.tick = msg.tick
+                    that.playerNum = msg.length
+                    that.tickTimes++
+                    that.allTickVal += msg.tick
+                    that.initPlayerList(msg.playerList)
+                })
+            },
+            onWebSocketError: (error) => {
+                console.error('Error with websocket', error)
+            },
+            onWebSocketError: (error) => {
+                console.error('Error with websocket', error)
+            },
+            onStompError: (frame) => {
+                console.error('Broker reported error: ' + frame.headers['message'])
+                console.error('Additional details: ' + frame.body)
+            }
         })
 
-        stompClient.onConnect = (frame) => {
-            console.log('Connected: ' + frame)
-            stompClient.subscribe('/topic/radar', (radar) => {
-                let msg = JSON.parse(radar.body)
-                that.gameInfo.mapName = msg.mapName
-                that.gameInfo.tick = msg.tick
-                that.playerNum = msg.length
-                that.tickTimes++
-                that.allTickVal += msg.tick
-                that.initPlayerList(msg.playerList)
-            })
-        }
-
-        stompClient.onWebSocketError = (error) => {
-            console.error('Error with websocket', error)
-        }
-
-        stompClient.onStompError = (frame) => {
-            console.error('Broker reported error: ' + frame.headers['message'])
-            console.error('Additional details: ' + frame.body)
-        }
-
-        stompClient.activate()
+        client.activate()
     },
     mounted() {
         that = this
