@@ -3,6 +3,10 @@ package cs2.dma.main;
 import cs2.dma.entry.PlayerInfo;
 import cs2.dma.tuil.MemoryTool;
 
+import java.util.*;
+import java.io.FileReader;
+import com.alibaba.fastjson.parser.DefaultJSONParser;
+
 public class PlayerAddressUpdateThread extends Thread {
     private int index;
     private PlayerInfo playerInfo;
@@ -17,13 +21,56 @@ public class PlayerAddressUpdateThread extends Thread {
     private long dwEntityList;
 
     // Offsets
-    private static final int m_iPawnHealth = 0x7F0; // client.dll m_iPawnHealth
-    private static final int m_iPawnArmor = 0x7F4; // client.dll m_iPawnArmor
-    private static final int m_bPawnIsAlive = 0x7EC; // client.dll m_bPawnIsAlive
-    private static final int m_angEyeAngles = 0x1390; // client.dll m_angEyeAngles
-    private static final int m_iTeamNum = 0x3CB; // client.dll m_iTeamNum
-    private static final int m_hPlayerPawn = 0x7E4; // client.dll m_hPlayerPawn
-    private static final int m_vOldOrigin = 0x127C; // PlayerPosition X //+ 0x4 Y //+ 0x8 Z
+    private static long m_iPawnHealth = 0x0; // client.dll m_iPawnHealth
+    private static long m_iPawnArmor = 0x0; // client.dll m_iPawnArmor
+    private static long m_bPawnIsAlive = 0x0; // client.dll m_bPawnIsAlive
+    private static long m_angEyeAngles = 0x0; // client.dll m_angEyeAngles
+    private static long m_iTeamNum = 0x0; // client.dll m_iTeamNum
+    private static long m_hPlayerPawn = 0x0; // client.dll m_hPlayerPawn
+    private static long m_vOldOrigin = 0x0; // PlayerPosition X //+ 0x4 Y //+ 0x8 Z
+
+    static {
+        try {
+            System.out.println("[+] Read offsets.json file");
+
+            FileReader reader = new FileReader("offsets.json");
+            char[] buf = new char[1024];
+            int len = 0;
+
+            StringBuilder sb = new StringBuilder();
+            while ((len = reader.read(buf)) != -1) {
+                sb.append(buf, 0, len);
+            }
+
+            String json = sb.toString();
+
+            reader.close();
+
+            DefaultJSONParser parser = new DefaultJSONParser(json);
+            Map<String, String> map = parser.parseObject(Map.class, Long.class);
+
+            m_iPawnHealth += Long.parseLong(map.get("m_iPawnHealth").replace("0x", ""), 16);
+            m_iPawnArmor += Long.parseLong(map.get("m_iPawnArmor").replace("0x", ""), 16);
+            m_bPawnIsAlive += Long.parseLong(map.get("m_bPawnIsAlive").replace("0x", ""), 16);
+            m_angEyeAngles += Long.parseLong(map.get("m_angEyeAngles").replace("0x", ""), 16);
+            m_iTeamNum += Long.parseLong(map.get("m_iTeamNum").replace("0x", ""), 16);
+            m_hPlayerPawn += Long.parseLong(map.get("m_hPlayerPawn").replace("0x", ""), 16);
+            m_vOldOrigin += Long.parseLong(map.get("m_vOldOrigin").replace("0x", ""), 16);
+
+            System.out.println("[+] m_iPawnHealth: " + m_iPawnHealth);
+            System.out.println("[+] m_iPawnArmor: " + m_iPawnArmor);
+            System.out.println("[+] m_bPawnIsAlive: " + m_bPawnIsAlive);
+            System.out.println("[+] m_angEyeAngles: " + m_angEyeAngles);
+            System.out.println("[+] m_iTeamNum: " + m_iTeamNum);
+            System.out.println("[+] m_hPlayerPawn: " + m_hPlayerPawn);
+            System.out.println("[+] m_vOldOrigin: " + m_vOldOrigin);
+
+            parser.close();
+        } catch (Exception e) {
+            System.out.println("[-] Failed to read offsets.json file: " + e.getMessage());
+            System.exit(1);
+        }
+    }
 
     public void setKnowMap(boolean knowMap) {
         isKnowMap = knowMap;

@@ -62,6 +62,38 @@ public class GameDataManager {
 
     private IVmm vmm;
 
+    // Offsets
+    private static long dwGameTypes_mapName = 0x0; // matchmaking.dll dwGameTypes_mapName
+
+    static {
+        try {
+            FileReader reader = new FileReader("offsets.json");
+            char[] buf = new char[1024];
+            int len = 0;
+
+            StringBuilder sb = new StringBuilder();
+            while ((len = reader.read(buf)) != -1) {
+                sb.append(buf, 0, len);
+            }
+
+            String json = sb.toString();
+
+            reader.close();
+
+            DefaultJSONParser parser = new DefaultJSONParser(json);
+            Map<String, String> map = parser.parseObject(Map.class, Long.class);
+
+            dwGameTypes_mapName += Long.parseLong(map.get("dwGameTypes_mapName").replace("0x", ""), 16);
+
+            System.out.println("[+] dwGameTypes_mapName: " + dwGameTypes_mapName);
+
+            parser.close();
+        } catch (Exception e) {
+            System.out.println("[-] Failed to read offsets.json file: " + e.getMessage());
+            System.exit(1);
+        }
+    }
+
     public boolean initializeVmm() {
         this.vmm = IVmm.initializeVmm(System.getProperty("user.dir") + "\\vmm", argvMemProcFS);
         vmm.setConfig(IVmm.VMMDLL_OPT_REFRESH_FREQ_FAST, 1);
@@ -93,7 +125,7 @@ public class GameDataManager {
         memoryTool = new MemoryTool(gameProcess);
         clientAddress = memoryTool.getModuleAddress("client.dll");
         mapNameAddress = memoryTool.getModuleAddress("matchmaking.dll");
-        mapNameAddress = memoryTool.readAddress(mapNameAddress + 0x001D23B0, 8); // dwGameTypes_mapName
+        mapNameAddress = memoryTool.readAddress(mapNameAddress + dwGameTypes_mapName, 8);
         EntityList = memoryTool.readAddress(clientAddress + dwEntityList, 8);
         EntityList = memoryTool.readAddress(EntityList + 0x10, 8);
 
