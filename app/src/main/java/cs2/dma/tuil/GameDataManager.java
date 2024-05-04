@@ -93,7 +93,7 @@ public class GameDataManager {
         memoryTool = new MemoryTool(gameProcess);
         clientAddress = memoryTool.getModuleAddress("client.dll");
         mapNameAddress = memoryTool.getModuleAddress("matchmaking.dll");
-        mapNameAddress = memoryTool.readAddress(mapNameAddress + 0x001D2300, 8);
+        mapNameAddress = memoryTool.readAddress(mapNameAddress + 0x001D23B0, 8); // dwGameTypes_mapName
         EntityList = memoryTool.readAddress(clientAddress + dwEntityList, 8);
         EntityList = memoryTool.readAddress(EntityList + 0x10, 8);
 
