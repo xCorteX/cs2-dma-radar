@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { Client } from '@stomp/stompjs'
+import { Client, Versions } from '@stomp/stompjs'
 
 import localPlayerIcon from '/src/icons/localPlayer_icon.png'
 import enemyIcon from '/src/icons/enemy_icon.png'
@@ -153,6 +153,9 @@ export default {
         const wsUrl = `${wsProtocol}://${window.location.hostname}${wsPort}/radar`
 
         const client = new Client({
+            heartbeatIncoming: 0,
+            heartbeatOutgoing: 0,
+            stompVersions: new Versions([Versions.V1_2]),
             brokerURL: wsUrl,
             onConnect: () => {
                 client.subscribe('/topic/radar', (radar) => {
