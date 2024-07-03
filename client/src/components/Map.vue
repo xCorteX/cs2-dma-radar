@@ -33,6 +33,9 @@ import de_vertigo_radar from '/src/map/de_vertigo_radar.png'
 import ar_baggage_radar from '/src/map/ar_baggage_radar.png'
 import ar_baggage_lower_radar from '/src/map/ar_baggage_lower_radar.png'
 import ar_shoots_radar from '/src/map/ar_shoots_radar.png'
+import de_mills_radar from '/src/map/de_mills_radar.png'
+import de_thera_radar from '/src/map/de_thera_radar.png'
+import de_thera_lower_radar from '/src/map/de_thera_lower_radar.png'
 
 var that
 var mapRadar = {
@@ -118,8 +121,25 @@ var mapRadar = {
     ar_shoots: {
         map: ar_shoots_radar,
         bounds: [
-            [-372, -137],
-            [128, 364]
+            [-223, -312],
+            [172, 84]
+        ]
+    },
+    de_mills: {
+        map: de_mills_radar,
+        bounds: [
+            [-300, -300],
+            [300, 300]
+        ]
+    },
+    de_thera: {
+        needChangeMap: true,
+        map: de_thera_radar,
+        mapLower: de_thera_lower_radar,
+        lowerValue: 11720,
+        bounds: [
+            [-223, -312],
+            [172, 84]
         ]
     }
 }
@@ -148,9 +168,9 @@ export default {
         }
     },
     created() {
-        const wsProtocol = window.location.protocol == 'https:' ? 'wss' : 'ws'
-        const wsPort = window.location.port ? `:${window.location.port}` : ''
-        const wsUrl = `${wsProtocol}://${window.location.hostname}${wsPort}/radar`
+        const wsProtocol = 'ws'
+        const wsPort = ':8080'
+        const wsUrl = `${wsProtocol}://localhost${wsPort}/radar`
 
         const client = new Client({
             heartbeatIncoming: 0,
@@ -220,7 +240,10 @@ export default {
                     this.tickTimes = 0
                     that.map.removeLayer(that.imageOverLay)
                 }
-                this.imageOverLay = L.imageOverlay(mapRadar[that.gameInfo.mapName].map, mapRadar[that.gameInfo.mapName].bounds).addTo(this.map)
+                this.imageOverLay = L.imageOverlay(mapRadar[that.gameInfo.mapName].map, mapRadar[that.gameInfo.mapName].bounds, {
+                    interactive: true,
+                    opacity: 0.3
+                }).addTo(this.map)
             }
         },
         initUnKnowMap() {
@@ -268,9 +291,10 @@ export default {
                     if (mapRadar[that.gameInfo.mapName].needChangeMap) {
                         if (item.z > mapRadar[that.gameInfo.mapName].lowerValue) {
                             that.map.removeLayer(that.imageOverLay)
-                            this.imageOverLay = L.imageOverlay(mapRadar[that.gameInfo.mapName].map, mapRadar[that.gameInfo.mapName].bounds).addTo(
-                                this.map
-                            )
+                            this.imageOverLay = L.imageOverlay(mapRadar[that.gameInfo.mapName].map, mapRadar[that.gameInfo.mapName].bounds, {
+                                interactive: true,
+                                opacity: 0.3
+                            }).addTo(this.map)
                         } else {
                             that.map.removeLayer(that.imageOverLay)
                             this.imageOverLay = L.imageOverlay(
