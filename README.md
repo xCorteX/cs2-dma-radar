@@ -12,7 +12,7 @@
 After you complied or downloaded the latest release, you can start the radar with the following command:
 
 ```bash
-java -jar CS2DMA-1.2.5.jar
+java -jar CS2DMA-1.2.6.jar
 ```
 
 Then you should be able to access the radar at http://localhost:8080
