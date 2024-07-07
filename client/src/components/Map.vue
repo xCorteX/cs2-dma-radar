@@ -128,18 +128,18 @@ var mapRadar = {
     de_mills: {
         map: de_mills_radar,
         bounds: [
-            [-300, -300],
-            [300, 300]
+            [-560, -482],
+            [-45, 50]
         ]
     },
     de_thera: {
         needChangeMap: true,
         map: de_thera_radar,
         mapLower: de_thera_lower_radar,
-        lowerValue: 11720,
+        lowerValue: -65,
         bounds: [
-            [-223, -312],
-            [172, 84]
+            [-263, -15],
+            [210, 495]
         ]
     }
 }
@@ -187,9 +187,6 @@ export default {
                     that.allTickVal += msg.tick
                     that.initPlayerList(msg.playerList)
                 })
-            },
-            onWebSocketError: (error) => {
-                console.error('Error with websocket', error)
             },
             onWebSocketError: (error) => {
                 console.error('Error with websocket', error)
@@ -242,7 +239,7 @@ export default {
                 }
                 this.imageOverLay = L.imageOverlay(mapRadar[that.gameInfo.mapName].map, mapRadar[that.gameInfo.mapName].bounds, {
                     interactive: true,
-                    opacity: 0.3
+                    opacity: 1
                 }).addTo(this.map)
             }
         },
@@ -266,7 +263,7 @@ export default {
                         return
                     }
 
-                    let potin = L.latLng(item.x / 10, item.y / 10)
+                    let point = L.latLng(item.x / 10, item.y / 10)
                     let icon = L.icon({
                         iconUrl: item.localPlayer
                             ? localPlayerIcon
@@ -282,10 +279,10 @@ export default {
                     })
 
                     if (item.localPlayer && this.isOpenFlow) {
-                        this.map.flyTo(potin, this.map.getZoom())
+                        this.map.flyTo(point, this.map.getZoom())
                     }
 
-                    mlist.push(this.addMarker(potin, icon, item.localPlayer ? (knowMap ? item.angles : 0) : item.angles))
+                    mlist.push(this.addMarker(point, icon, item.localPlayer ? (knowMap ? item.angles : 0) : item.angles))
                 }
                 if (item.localPlayer && knowMap) {
                     if (mapRadar[that.gameInfo.mapName].needChangeMap) {
@@ -293,7 +290,7 @@ export default {
                             that.map.removeLayer(that.imageOverLay)
                             this.imageOverLay = L.imageOverlay(mapRadar[that.gameInfo.mapName].map, mapRadar[that.gameInfo.mapName].bounds, {
                                 interactive: true,
-                                opacity: 0.3
+                                opacity: 1
                             }).addTo(this.map)
                         } else {
                             that.map.removeLayer(that.imageOverLay)
