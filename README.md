@@ -15,7 +15,9 @@ After you complied or downloaded the latest release, you can start the radar wit
 java -jar CS2DMA-1.2.6.jar
 ```
 
-Then you should be able to access the radar at http://localhost:8080
+When using this radar with an advanced anti-cheat (Faceit, Esea etc.) avoid runnnig the radar on the same network as the target machine.
+
+You should be able to access the radar at http://localhost:8080 and your local IP address. If you want to share the radar with your friends, check the section [Share radar](#-share-radar).
 
 ## ⚡️ Requirements
 
