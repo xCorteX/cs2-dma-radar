@@ -168,9 +168,9 @@ export default {
         }
     },
     created() {
-        const wsProtocol = 'ws'
-        const wsPort = ':8080'
-        const wsUrl = `${wsProtocol}://localhost${wsPort}/radar`
+        const wsProtocol = window.location.protocol == 'https:' ? 'wss' : 'ws'
+        const wsPort = window.location.port ? `:${window.location.port}` : ''
+        const wsUrl = `${wsProtocol}://${window.location.hostname}${wsPort}/radar`
 
         const client = new Client({
             heartbeatIncoming: 0,
@@ -268,12 +268,12 @@ export default {
                         iconUrl: item.localPlayer
                             ? localPlayerIcon
                             : item.enemy
-                            ? item.sameLevel
-                                ? enemyIcon
-                                : enemyIconHvd
-                            : item.sameLevel
-                            ? teammateIcon
-                            : teammateIconHvd,
+                              ? item.sameLevel
+                                  ? enemyIcon
+                                  : enemyIconHvd
+                              : item.sameLevel
+                                ? teammateIcon
+                                : teammateIconHvd,
                         iconSize: [40, 40],
                         iconAnchor: [19, 25]
                     })
