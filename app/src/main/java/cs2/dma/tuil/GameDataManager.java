@@ -12,6 +12,8 @@ import com.alibaba.fastjson.parser.DefaultJSONParser;
 public class GameDataManager {
     private static long dwLocalPlayerPawn = 0x0;
     private static long dwEntityList = 0x0;
+    private static long dwGameTypes = 0x0; 
+    private static long dwGameTypes_mapName = 0x0; 
 
     static {
         try {
@@ -35,9 +37,13 @@ public class GameDataManager {
 
             dwLocalPlayerPawn += Long.parseLong(map.get("dwLocalPlayerPawn").replace("0x", ""), 16);
             dwEntityList += Long.parseLong(map.get("dwEntityList").replace("0x", ""), 16);
+            dwGameTypes += Long.parseLong(map.get("dwGameTypes").replace("0x", ""), 16);
+            dwGameTypes_mapName += Long.parseLong(map.get("dwGameTypes_mapName").replace("0x", ""), 16);
 
             System.out.println("[+] dwLocalPlayerPawn: " + dwLocalPlayerPawn);
             System.out.println("[+] dwEntityList: " + dwEntityList);
+            System.out.println("[+] dwGameTypes: " + dwGameTypes);
+            System.out.println("[+] dwGameTypes_mapName: " + dwGameTypes_mapName);
 
             parser.close();
         } catch (Exception e) {
@@ -62,37 +68,6 @@ public class GameDataManager {
 
     private IVmm vmm;
 
-    // Offsets
-    private static long dwGameTypes_mapName = 0x0; // matchmaking.dll dwGameTypes_mapName
-
-    static {
-        try {
-            FileReader reader = new FileReader("offsets.json");
-            char[] buf = new char[1024];
-            int len = 0;
-
-            StringBuilder sb = new StringBuilder();
-            while ((len = reader.read(buf)) != -1) {
-                sb.append(buf, 0, len);
-            }
-
-            String json = sb.toString();
-
-            reader.close();
-
-            DefaultJSONParser parser = new DefaultJSONParser(json);
-            Map<String, String> map = parser.parseObject(Map.class, Long.class);
-
-            dwGameTypes_mapName += Long.parseLong(map.get("dwGameTypes_mapName").replace("0x", ""), 16);
-
-            System.out.println("[+] dwGameTypes_mapName: " + dwGameTypes_mapName);
-
-            parser.close();
-        } catch (Exception e) {
-            System.out.println("[-] Failed to read offsets.json file: " + e.getMessage());
-            System.exit(1);
-        }
-    }
 
     public boolean initializeVmm() {
         this.vmm = IVmm.initializeVmm(System.getProperty("user.dir") + "\\vmm", argvMemProcFS);
@@ -125,7 +100,7 @@ public class GameDataManager {
         memoryTool = new MemoryTool(gameProcess);
         clientAddress = memoryTool.getModuleAddress("client.dll");
         mapNameAddress = memoryTool.getModuleAddress("matchmaking.dll");
-        mapNameAddress = memoryTool.readAddress(mapNameAddress + dwGameTypes_mapName, 8);
+        mapNameAddress = memoryTool.readAddress(mapNameAddress + dwGameTypes + dwGameTypes_mapName, 8);
         EntityList = memoryTool.readAddress(clientAddress + dwEntityList, 8);
         EntityList = memoryTool.readAddress(EntityList + 0x10, 8);
 
