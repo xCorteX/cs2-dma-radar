@@ -21,13 +21,15 @@ public class PlayerAddressUpdateThread extends Thread {
     private long dwEntityList;
 
     // Offsets
-    private static long m_iPawnHealth = 0x0; // client.dll m_iPawnHealth
-    private static long m_iPawnArmor = 0x0; // client.dll m_iPawnArmor
-    private static long m_bPawnIsAlive = 0x0; // client.dll m_bPawnIsAlive
-    private static long m_angEyeAngles = 0x0; // client.dll m_angEyeAngles
-    private static long m_iTeamNum = 0x0; // client.dll m_iTeamNum
-    private static long m_hPlayerPawn = 0x0; // client.dll m_hPlayerPawn
+    private static long m_iHealth = 0x0; 
+    private static long m_iPawnArmor = 0x0; 
+    private static long m_lifeState = 0x0; 
+    private static long m_angEyeAngles = 0x0; 
+    private static long m_iTeamNum = 0x0; 
+    private static long m_hPlayerPawn = 0x0; 
     private static long m_vOldOrigin = 0x0; // PlayerPosition X //+ 0x4 Y //+ 0x8 Z
+    private static long m_iCompTeammateColor = 0x0;
+    
 
     static {
         try {
@@ -49,21 +51,25 @@ public class PlayerAddressUpdateThread extends Thread {
             DefaultJSONParser parser = new DefaultJSONParser(json);
             Map<String, String> map = parser.parseObject(Map.class, Long.class);
 
-            m_iPawnHealth += Long.parseLong(map.get("m_iPawnHealth").replace("0x", ""), 16);
+            m_iHealth += Long.parseLong(map.get("m_iHealth").replace("0x", ""), 16);
             m_iPawnArmor += Long.parseLong(map.get("m_iPawnArmor").replace("0x", ""), 16);
-            m_bPawnIsAlive += Long.parseLong(map.get("m_bPawnIsAlive").replace("0x", ""), 16);
+            m_lifeState += Long.parseLong(map.get("m_lifeState").replace("0x", ""), 16);
             m_angEyeAngles += Long.parseLong(map.get("m_angEyeAngles").replace("0x", ""), 16);
             m_iTeamNum += Long.parseLong(map.get("m_iTeamNum").replace("0x", ""), 16);
             m_hPlayerPawn += Long.parseLong(map.get("m_hPlayerPawn").replace("0x", ""), 16);
             m_vOldOrigin += Long.parseLong(map.get("m_vOldOrigin").replace("0x", ""), 16);
+            m_iCompTeammateColor += Long.parseLong(map.get("m_iCompTeammateColor").replace("0x", ""), 16);
+            
 
-            System.out.println("[+] m_iPawnHealth: " + m_iPawnHealth);
+            System.out.println("[+] m_iHealth: " + m_iHealth);
             System.out.println("[+] m_iPawnArmor: " + m_iPawnArmor);
-            System.out.println("[+] m_bPawnIsAlive: " + m_bPawnIsAlive);
+            System.out.println("[+] m_lifeState: " + m_lifeState);
             System.out.println("[+] m_angEyeAngles: " + m_angEyeAngles);
             System.out.println("[+] m_iTeamNum: " + m_iTeamNum);
             System.out.println("[+] m_hPlayerPawn: " + m_hPlayerPawn);
             System.out.println("[+] m_vOldOrigin: " + m_vOldOrigin);
+            System.out.println("[+] m_iCompTeammateColor: " + m_iCompTeammateColor);
+            
 
             parser.close();
         } catch (Exception e) {
@@ -115,6 +121,10 @@ public class PlayerAddressUpdateThread extends Thread {
         long Pawn = memoryTool.readAddress(EntityAddress + m_hPlayerPawn, 8);
         if (Pawn == 0)
             return;
+
+            //color teammates
+        int compTeammateColor = memoryTool.readInt(EntityAddress + m_iCompTeammateColor, 4);
+
         EntityPawnListEntry = memoryTool.readAddress(EntityPawnListEntry + 0x10 + 8 * ((Pawn & 0x7FFF) >> 9), 8);
         Pawn = memoryTool.readAddress(EntityPawnListEntry + 0x78 * (Pawn & 0x1FF), 8);
         if (Pawn == 0)
@@ -129,16 +139,18 @@ public class PlayerAddressUpdateThread extends Thread {
                     EntityAddress,
                     Pawn,
                     teamId,
-                    memoryTool.readInt(EntityAddress + m_iPawnHealth, 4),
-                    memoryTool.readInt(EntityAddress + m_iPawnArmor, 4),
-                    memoryTool.readInt(EntityAddress + m_bPawnIsAlive, 4) != 0,
+                    memoryTool.readInt(Pawn + m_iHealth, 4),
+                    memoryTool.readInt(Pawn + m_iPawnArmor, 4),
+                    memoryTool.readInt(Pawn + m_lifeState  , 4)==256,
                     LocalPlayerController == Pawn,
                     memoryTool.readInt(LocalPlayerController + m_iTeamNum, 4) != teamId,
                     memoryTool.readFloat(Pawn + m_vOldOrigin + 0x4, 4),
                     memoryTool.readFloat(Pawn + m_vOldOrigin, 4),
                     playerZ,
                     90 - memoryTool.readFloat(Pawn + m_angEyeAngles + 0x4, 8),
-                    levelDv < levelHeight);
+                    levelDv < levelHeight,
+                    compTeammateColor
+            );
         } else {
             float angle = memoryTool.readFloat(LocalPlayerController + m_angEyeAngles + 0x4, 8) - 90;
             int teamId = memoryTool.readInt(EntityAddress + m_iTeamNum, 4);
@@ -155,16 +167,18 @@ public class PlayerAddressUpdateThread extends Thread {
                     EntityAddress,
                     Pawn,
                     teamId,
-                    memoryTool.readInt(EntityAddress + m_iPawnHealth, 4),
-                    memoryTool.readInt(EntityAddress + m_iPawnArmor, 4),
-                    memoryTool.readInt(EntityAddress + m_bPawnIsAlive, 4) != 0,
+                    memoryTool.readInt(Pawn + m_iHealth, 4),
+                    memoryTool.readInt(Pawn + m_iPawnArmor, 4),
+                    memoryTool.readInt(Pawn + m_lifeState  , 4)==256,
                     LocalPlayerController == Pawn,
                     memoryTool.readInt(LocalPlayerController + m_iTeamNum, 4) != teamId,
                     newX,
                     newY,
                     playerZ,
                     90 - memoryTool.readFloat(Pawn + m_angEyeAngles + 0x4, 8) + angle,
-                    levelDv < levelHeight);
+                    levelDv < levelHeight,
+                    compTeammateColor
+            );
         }
     }
 
