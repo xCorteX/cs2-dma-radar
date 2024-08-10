@@ -1,13 +1,18 @@
 <template>
     <div class="control">
-        <div>Number of players: {{ playerNum }}</div>
+        
         <div>Tick: {{ gameInfo.tick }}</div>
         <div>Average tick: {{ parseInt(allTickVal / tickTimes) }}</div>
-        <div @click="opchange">Follow character<input type="checkbox" v-model="isOpenFlow" /></div>
-        <div @click="showTeammatesChange">Show teammates<input type="checkbox" v-model="showTeammates" /></div>
+        
+
+        <div v-for="(showTeammate, index) in showTeammates" :key="index" @click="toggleTeammate(index)">
+            Show {{ teammateNames[index] }}<input type="checkbox" v-model="showTeammates[index]" />
+        </div>
+
         <div @click="showEnemiesChanges">Show enemies<input type="checkbox" v-model="showEnemies" /></div>
     </div>
     <div id="map"></div>
+
 </template>
 
 <script>
@@ -160,12 +165,11 @@
     export default {
         data() {
             return {
-                playerNum: 0,
                 allTickVal: 0,
                 tickTimes: 0,
-                isOpenFlow: false,
-                showTeammates: true,
+                showTeammates: [true, true, true, true, true],  
                 showEnemies: true,
+                teammateNames: ['Blue', 'Green', 'Yellow', 'Orange', 'Purple'],  
                 zoom: 1,
                 lastMapName: null,
                 gameInfo: {},
@@ -195,7 +199,6 @@
                         let msg = JSON.parse(radar.body);
                         this.gameInfo.mapName = msg.mapName;
                         this.gameInfo.tick = msg.tick;
-                        this.playerNum = msg.length;
                         this.tickTimes++;
                         this.allTickVal += msg.tick;
                         this.initPlayerList(msg.playerList);
@@ -217,8 +220,8 @@
             this.initMap();
         },
         methods: {
-            opchange() {
-                this.isOpenFlow = !this.isOpenFlow;
+            toggleTeammate(index) {
+                this.showTeammates[index] = !this.showTeammates[index];
             },
             showTeammatesChange() {
                 this.showTeammates = !this.showTeammates;
@@ -263,7 +266,10 @@
                 let mlist = [];
                 data.forEach((item) => {
                     if (item.alive) {
-                        
+
+                        if ((item.enemy && !this.showEnemies) || (!item.enemy && !this.showTeammates[item.compTeammateColor])) {
+                            return; 
+                        }
 
                         let point = L.latLng(item.x / 10, item.y / 10);
                         let iconUrl;
@@ -284,9 +290,6 @@
                             iconAnchor: [20, 26.5]
                         });
 
-                        if (item.localPlayer && this.isOpenFlow) {
-                            this.map.flyTo(point, this.map.getZoom());
-                        }
 
                         let marker = this.addMarker(point, icon, item.localPlayer ? (knowMap ? item.angles : 0) : item.angles);
 
@@ -418,5 +421,8 @@
     }
     .health-text {
         text-align: center;
+    }
+    .control div {
+        margin-bottom: 5px;
     }
 </style>
