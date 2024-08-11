@@ -15,7 +15,8 @@ public class PlayerInfo {
     private float z;
     private float Angles;
     private boolean isSameLevel;
-
+    private int compTeammateColor;
+    
     public PlayerInfo() {
     }
 
@@ -32,7 +33,9 @@ public class PlayerInfo {
             float y,
             float z,
             float angles,
-            boolean isSameLevel) {
+            boolean isSameLevel,
+            int compTeammateColor
+            ) {
         this.entityAddress = entityAddress;
         this.entityPawnAddress = entityPawnAddress;
         this.teamId = teamId;
@@ -46,6 +49,7 @@ public class PlayerInfo {
         this.z = z;
         this.Angles = angles;
         this.isSameLevel = isSameLevel;
+        this.compTeammateColor = compTeammateColor;      
     }
 
     public boolean isSameLevel() {
@@ -150,5 +154,13 @@ public class PlayerInfo {
 
     public void setAngles(float angles) {
         Angles = angles;
+    }
+
+    public int getCompTeammateColor() {
+        return compTeammateColor;
+    }
+
+    public void setCompTeammateColor(int compTeammateColor) {
+        this.compTeammateColor = compTeammateColor;
     }
 }
