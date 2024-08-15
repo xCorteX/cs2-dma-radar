@@ -21,8 +21,8 @@
     
     import enemyIcon from '/src/icons/enemy_icon.png'
     import enemyIconHvd from '/src/icons/enemy_icon_hvd.png'
-
-    import defaultTeammateIcon from '/src/icons/teammate_icon_-1.png'
+    import localPlayerIcon from '/src/icons/localPlayer_icon.png'
+    import defaultTeammateIcon from '/src/icons/teammate_icon.png'
     import teammateIcon0 from '/src/icons/teammate_icon_0.png'
     import teammateIcon1 from '/src/icons/teammate_icon_1.png'
     import teammateIcon2 from '/src/icons/teammate_icon_2.png'
