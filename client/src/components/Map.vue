@@ -266,33 +266,41 @@
                 let mlist = [];
                 data.forEach((item) => {
                     if (item.alive) {
-
-                        if ((item.enemy && !this.showEnemies) || (!item.enemy && !this.showTeammates[item.compTeammateColor])) {
-                            return; 
+                        if ((item.enemy && !this.showEnemies) || (!item.enemy && !this.showTeammates[item.compTeammateColor] && item.compTeammateColor !== -1)) {
+                            return;
                         }
-
+            
                         let point = L.latLng(item.x / 10, item.y / 10);
                         let iconUrl;
-
-                        if (item.localPlayer) {
-                            let teammateColorIconIndex = item.compTeammateColor;
-                            iconUrl = teammateIcons[teammateColorIconIndex] || defaultTeammateIcon;
-                        } else if (item.enemy) {
-                            iconUrl = item.sameLevel ? enemyIcon : enemyIconHvd;
+            
+                        if (item.compTeammateColor === -1) {
+                            if (item.localPlayer) {
+                                iconUrl = localPlayerIcon;
+                            } else if (item.enemy) {
+                                iconUrl = item.sameLevel ? enemyIcon : enemyIconHvd;
+                            } else {
+                                iconUrl = defaultTeammateIcon;
+                            }
                         } else {
-                            let teammateColorIconIndex = item.compTeammateColor;
-                            iconUrl = teammateIcons[teammateColorIconIndex] || defaultTeammateIcon;
+                            if (item.localPlayer) {
+                                let teammateColorIconIndex = item.compTeammateColor;
+                                iconUrl = teammateIcons[teammateColorIconIndex] || localPlayerIcon;
+                            } else if (item.enemy) {
+                                iconUrl = item.sameLevel ? enemyIcon : enemyIconHvd;
+                            } else {
+                                let teammateColorIconIndex = item.compTeammateColor;
+                                iconUrl = teammateIcons[teammateColorIconIndex] || defaultTeammateIcon;
+                            }
                         }
-
+            
                         let icon = L.icon({
                             iconUrl: iconUrl,
                             iconSize: [40, 40],
                             iconAnchor: [20, 26.5]
                         });
-
-
+            
                         let marker = this.addMarker(point, icon, item.localPlayer ? (knowMap ? item.angles : 0) : item.angles);
-
+            
                         // Add Health
                         let healthIcon = L.divIcon({
                             className: 'health-marker',
@@ -300,13 +308,13 @@
                             iconSize: [40, 40],
                             iconAnchor: [20, 8]
                         });
-
+            
                         let healthMarker = L.marker(point, { icon: healthIcon });
-
+            
                         mlist.push(marker);
                         mlist.push(healthMarker);
                     }
-
+            
                     if (item.localPlayer && knowMap) {
                         if (mapRadar[this.gameInfo.mapName].needChangeMap) {
                             if (item.z > mapRadar[this.gameInfo.mapName].lowerValue) {
@@ -325,7 +333,7 @@
                         }
                     }
                 });
-
+            
                 if (this.layerGroup != null) {
                     this.map.removeLayer(this.layerGroup);
                 }
