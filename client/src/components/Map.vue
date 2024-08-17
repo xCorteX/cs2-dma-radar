@@ -1,24 +1,24 @@
 <template>
     <div class="control">
-        
+        <button @click="rotateMap">Rotate Map</button>
+        <br>
         <div>Tick: {{ gameInfo.tick }}</div>
         <div>Average tick: {{ parseInt(allTickVal / tickTimes) }}</div>
-        
 
         <div v-for="(showTeammate, index) in showTeammates" :key="index" @click="toggleTeammate(index)">
             Show {{ teammateNames[index] }}<input type="checkbox" v-model="showTeammates[index]" />
         </div>
 
-        <div @click="showEnemiesChanges">Show enemies<input type="checkbox" v-model="showEnemies" /></div>
+        <div @click="showEnemiesChanges">Show Enemies<input type="checkbox" v-model="showEnemies" /></div>
     </div>
-    <div id="map"></div>
-
+    <div id="map-container">
+        <div id="map" :style="{ transform: `rotate(${rotationAngle}deg)` }"></div>
+    </div>
 </template>
 
 <script>
     import { Client, Versions } from '@stomp/stompjs'
 
-    
     import enemyIcon from '/src/icons/enemy_icon.png'
     import enemyIconHvd from '/src/icons/enemy_icon_hvd.png'
     import localPlayerIcon from '/src/icons/localPlayer_icon.png'
@@ -28,7 +28,6 @@
     import teammateIcon2 from '/src/icons/teammate_icon_2.png'
     import teammateIcon3 from '/src/icons/teammate_icon_3.png'
     import teammateIcon4 from '/src/icons/teammate_icon_4.png'
-
 
     import cs_office_radar from '/src/map/cs_office_radar.png'
     import de_ancient_radar from '/src/map/de_ancient_radar.png'
@@ -167,9 +166,9 @@
             return {
                 allTickVal: 0,
                 tickTimes: 0,
-                showTeammates: [true, true, true, true, true],  
+                showTeammates: [true, true, true, true, true],
                 showEnemies: true,
-                teammateNames: ['Blue', 'Green', 'Yellow', 'Orange', 'Purple'],  
+                teammateNames: ['Blue', 'Green', 'Yellow', 'Orange', 'Purple'],
                 zoom: 1,
                 lastMapName: null,
                 gameInfo: {},
@@ -181,7 +180,8 @@
                     [155, 185]
                 ],
                 XSize: 500,
-                YSize: 500
+                YSize: 500,
+                rotationAngle: 0 
             }
         },
         created() {
@@ -252,6 +252,7 @@
                         interactive: true,
                         opacity: 1
                     }).addTo(this.map);
+                    this.map.setView(this.imageOverLay.getBounds().getCenter());
                 }
             },
             initUnKnowMap() {
@@ -269,10 +270,10 @@
                         if ((item.enemy && !this.showEnemies) || (!item.enemy && !this.showTeammates[item.compTeammateColor] && item.compTeammateColor !== -1)) {
                             return;
                         }
-            
+
                         let point = L.latLng(item.x / 10, item.y / 10);
                         let iconUrl;
-            
+
                         if (item.compTeammateColor === -1) {
                             if (item.localPlayer) {
                                 iconUrl = localPlayerIcon;
@@ -292,15 +293,15 @@
                                 iconUrl = teammateIcons[teammateColorIconIndex] || defaultTeammateIcon;
                             }
                         }
-            
+
                         let icon = L.icon({
                             iconUrl: iconUrl,
                             iconSize: [40, 40],
                             iconAnchor: [20, 26.5]
                         });
-            
+
                         let marker = this.addMarker(point, icon, item.localPlayer ? (knowMap ? item.angles : 0) : item.angles);
-            
+
                         // Add Health
                         let healthIcon = L.divIcon({
                             className: 'health-marker',
@@ -308,13 +309,13 @@
                             iconSize: [40, 40],
                             iconAnchor: [20, 8]
                         });
-            
+
                         let healthMarker = L.marker(point, { icon: healthIcon });
-            
+
                         mlist.push(marker);
                         mlist.push(healthMarker);
                     }
-            
+
                     if (item.localPlayer && knowMap) {
                         if (mapRadar[this.gameInfo.mapName].needChangeMap) {
                             if (item.z > mapRadar[this.gameInfo.mapName].lowerValue) {
@@ -333,7 +334,7 @@
                         }
                     }
                 });
-            
+
                 if (this.layerGroup != null) {
                     this.map.removeLayer(this.layerGroup);
                 }
@@ -403,12 +404,27 @@
                     icon: icon,
                     rotationAngle: angles
                 });
+            },
+            rotateMap() {
+                this.rotationAngle = (this.rotationAngle + 90) % 360;
+                const mapContainer = document.getElementById('map');
+                mapContainer.style.transform = `rotate(${this.rotationAngle}deg)`;
+                this.updatePlayerMarker(this.gameInfo.playerList, !!mapRadar[this.gameInfo.mapName]);
             }
         }
     }
 </script>
 
 <style scoped>
+    #map-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 0;
+    }
+
     #map {
         position: absolute;
         width: 100%;
@@ -416,6 +432,7 @@
         top: 0;
         left: 0;
         z-index: 0;
+        transition: transform 0.5s ease-in-out; /* Smooth transition */
     }
 
     .control {
@@ -427,9 +444,11 @@
         border-radius: 10px;
         padding: 5px 10px;
     }
+
     .health-text {
         text-align: center;
     }
+
     .control div {
         margin-bottom: 5px;
     }
