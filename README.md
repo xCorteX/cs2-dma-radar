@@ -12,7 +12,7 @@
 After you complied or downloaded the latest release, you can start the radar with the following command:
 
 ```bash
-java -jar CS2DMA-1.2.7.jar
+java -jar CS2DMA-1.3.0.jar
 ```
 
 When using this radar with an advanced anti-cheat (Faceit, Esea etc.) avoid runnnig the radar on the same network as the target machine.
@@ -34,8 +34,10 @@ You should be able to access the radar at http://localhost:8080 and your local I
 
 #### 🚨 Note
 
-Only tested on Windows. The release provides the necessary Dynamic Link Libraries (DLLs). To run on Linux, you need to obtain
-the Shared Object (.so) files yourself and replace the ones in the release directory. Also the paths have to be adjusted.
+1. If you have issues installing make on Windows you can follow this [guide](https://gist.github.com/evanwill/0207876c3243bbb6863e65ec5dc3f058#make)
+
+2. Only tested on Windows. The release provides the necessary Dynamic Link Libraries (DLLs). To run on Linux, you need to obtain
+   the Shared Object (.so) files yourself and replace the ones in the release directory. Also the paths have to be adjusted.
 
 **Client still has to run Windows!**
 

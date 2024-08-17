@@ -432,7 +432,7 @@
         top: 0;
         left: 0;
         z-index: 0;
-        transition: transform 0.5s ease-in-out; /* Smooth transition */
+        transition: transform 0.5s ease-in-out;
     }
 
     .control {
